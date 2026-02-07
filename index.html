@@ -74,24 +74,24 @@
 <body>  <!-- Landing -->  <div class="card" id="landing">
     <h1>Happy Valentine Day Baby! 💍</h1>
     <p>Every second with you is a celebration 💖</p>
-    <button class="red" onclick="go('mine')">SEE MY GIFTS →</button>
+    <button class="red" onclick="playSuccess();go('mine')">SEE MY GIFTS →</button>
   </div>  <!-- Will you be mine -->  <div class="card hidden" id="mine">
     <h2>Will you be mine? 🥺</h2>
-    <button class="red" id="yesBtn" onclick="go('gifts')">YES</button>
+    <button class="red" id="yesBtn" onclick="playSuccess();go('gifts')">YES</button>
     <button class="blue" id="noBtn">NO</button>
     <p id="tease"></p>
   </div>  <!-- Gifts -->  <div class="card hidden" id="gifts">
     <h2>Something for You 🎁</h2>
     <div class="gifts">
-      <div class="gift" onclick="go('quiz')">Gift 1</div>
-      <div class="gift" onclick="go('letter')">Gift 2</div>
-      <div class="gift" onclick="go('photos')">Gift 3</div>
+      <div class="gift" onclick="playClick();go('quiz')">Gift 1</div>
+      <div class="gift" onclick="playClick();go('letter')">Gift 2</div>
+      <div class="gift" onclick="playClick();go('photos')">Gift 3</div>
     </div>
   </div>  <!-- Quiz -->  <div class="card hidden" id="quiz">
     <h2 id="question"></h2>
     <div class="quiz-options">
-      <button class="blue" onclick="answer(false)">You</button>
-      <button class="red" onclick="answer(true)">Me</button>
+      <button class="blue" onclick="playClick();answer(false)">You</button>
+      <button class="red" onclick="playSuccess();answer(true)">Me</button>
     </div>
     <p id="quizMsg"></p>
   </div>  <!-- Letter -->  <div class="card hidden" id="letter">
@@ -124,6 +124,18 @@
 </div>
     <button class="red" onclick="go('gifts')">← Back</button>
   </div><script>
+    const clickSound = new Audio('assets/sounds/click.mp3');
+const successSound = new Audio('assets/sounds/success.mp3');
+
+function playClick() {
+  clickSound.currentTime = 0;
+  clickSound.play();
+}
+
+function playSuccess() {
+  successSound.currentTime = 0;
+  successSound.play();
+}
   const sections = ['landing','mine','gifts','quiz','letter','photos'];
   function go(id) {
     sections.forEach(s => document.getElementById(s).classList.add('hidden'));
