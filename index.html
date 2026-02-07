@@ -1,63 +1,82 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>For You ❤️</title>
-  <style>
-    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body {
-      margin: 0;
-      background: #ffd6e5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .card {
-      background: #ffc0d9;
-      width: 92%;
-      max-width: 420px;
-      padding: 24px;
-      border-radius: 22px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-      text-align: center;
-    }
-    h1, h2 { color: #4a1c2f; }
-    p { color: #5f2b3d; }
-    button {
-      border: none;
-      border-radius: 20px;
-      padding: 12px 22px;
-      font-size: 16px;
-      margin: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .red { background: #ff4d6d; color: white; }
-    .blue { background: #4d79ff; color: white; }
-    .hidden { display: none; }
-    .gifts { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .gift {
-      background: #ffe6ef;
-      padding: 16px;
-      border-radius: 16px;
-      width: 100px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .quiz-options button { width: 120px; }
-    .photos {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-    .photo {
-      background: #fff;
-      padding: 8px;
-      border-radius: 10px;
-      font-size: 12px;
-    }
-    .photo img {
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #ffd6e5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.card {
+  background: #ffc0d9;
+  width: 92%;
+  max-width: 420px;
+  padding: 24px;
+  border-radius: 22px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+button {
+  border: none;
+  border-radius: 20px;
+  padding: 12px 22px;
+  font-size: 16px;
+  margin: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.red { background: #ff4d6d; color: white; }
+.blue { background: #4d79ff; color: white; }
+
+.gifts {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.gift {
+  background: #ffe6ef;
+  padding: 16px;
+  border-radius: 16px;
+  width: 100px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.photos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.photo {
+  background: #fff;
+  padding: 8px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.photo img {
   width: 100%;
   height: auto;
   border-radius: 8px;
@@ -69,113 +88,176 @@
   font-size: 12px;
   text-align: center;
 }
-  </style>
+
+/* Confetti */
+.confetti {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  top: -10px;
+  animation: fall 3s linear forwards;
+  z-index: 999;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Hearts */
+.heart {
+  position: fixed;
+  font-size: 20px;
+  animation: floatUp 2.5s ease-out forwards;
+  z-index: 999;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-120px); opacity: 0; }
+}
+</style>
 </head>
-<body>  <!-- Landing -->  <div class="card" id="landing">
-    <h1>Happy Valentine Day Baby! 💍</h1>
-    <p>Every second with you is a celebration 💖</p>
-    <button class="red" onclick="playSuccess();go('mine')">SEE MY GIFTS →</button>
-  </div>  <!-- Will you be mine -->  <div class="card hidden" id="mine">
-    <h2>Will you be mine? 🥺</h2>
-    <button class="red" id="yesBtn" onclick="playSuccess();go('gifts')">YES</button>
-    <button class="blue" id="noBtn">NO</button>
-    <p id="tease"></p>
-  </div>  <!-- Gifts -->  <div class="card hidden" id="gifts">
-    <h2>Something for You 🎁</h2>
-    <div class="gifts">
-      <div class="gift" onclick="playClick();go('quiz')">Gift 1</div>
-      <div class="gift" onclick="playClick();go('letter')">Gift 2</div>
-      <div class="gift" onclick="playClick();go('photos')">Gift 3</div>
-    </div>
-  </div>  <!-- Quiz -->  <div class="card hidden" id="quiz">
-    <h2 id="question"></h2>
-    <div class="quiz-options">
-      <button class="blue" onclick="playClick();answer(false)">You</button>
-      <button class="red" onclick="playSuccess();answer(true)">Me</button>
-    </div>
-    <p id="quizMsg"></p>
-  </div>  <!-- Letter -->  <div class="card hidden" id="letter">
-    <h2>A Letter For You 🥺</h2>
-    <p style="background:#fff5cc;padding:16px;border-radius:12px;">
-      My baby,<br><br>
-      Thank you for being my person. You are my home, my comfort, my favorite thought every day. I choose you, always.
-      <br><br>Forever yours ❤️
-    </p>
-    <button class="red" onclick="go('gifts')">← Back</button>
-  </div>  <!-- Photos -->  <div class="card hidden" id="photos">
-    <h2>Look at this cutie 😭</h2>
-<div class="photos">
-  <div class="photo">
-    <img src="assets/photos/photo1.jpg">
-    <p>Sweet Hello</p>
-  </div>
-  <div class="photo">
-    <img src="assets/photos/photo2.jpg">
-    <p>True Smile</p>
-  </div>
-  <div class="photo">
-    <img src="assets/photos/photo3.jpg">
-    <p>Perfect Day</p>
-  </div>
-  <div class="photo">
-    <img src="assets/photos/photo4.jpg">
-    <p>Forever Us</p>
+
+<body>
+
+<!-- Landing -->
+<div class="card" id="landing">
+  <h1>Happy Valentine Day Baby! 💍</h1>
+  <button class="red" onclick="playClick(); go('mine')">SEE MY GIFTS →</button>
+</div>
+
+<!-- Will you be mine -->
+<div class="card hidden" id="mine">
+  <h2>Will you be mine? 🥺</h2>
+  <button class="red" id="yesBtn" onclick="playSuccess(); launchConfetti(); go('gifts')">YES</button>
+  <button class="blue" id="noBtn">NO</button>
+  <p id="tease"></p>
+</div>
+
+<!-- Gifts -->
+<div class="card hidden" id="gifts">
+  <h2>Something for You 🎁</h2>
+  <div class="gifts">
+    <div class="gift" onclick="playClick(); go('quiz')">Gift 1</div>
+    <div class="gift" onclick="playClick(); go('letter')">Gift 2</div>
+    <div class="gift" onclick="playClick(); go('photos')">Gift 3</div>
   </div>
 </div>
-    <button class="red" onclick="go('gifts')">← Back</button>
-  </div><script>
-    const clickSound = new Audio('assets/sounds/click.mp3');
+
+<!-- Quiz -->
+<div class="card hidden" id="quiz">
+  <h2 id="question"></h2>
+  <button class="blue" onclick="playClick(); answer('you')">You</button>
+  <button class="red" onclick="playSuccess(); answer('me')">Me</button>
+  <p id="quizMsg"></p>
+</div>
+
+<!-- Letter -->
+<div class="card hidden" id="letter">
+  <h2>A Letter For You 🥺</h2>
+  <p style="background:#fff5cc;padding:16px;border-radius:12px;">
+    My baby,<br><br>
+    You are my comfort, my chaos, my calm and my forever.
+    Thank you for choosing me every day.<br><br>
+    Always yours ❤️
+  </p>
+  <button class="red" onclick="go('gifts')">← Back</button>
+</div>
+
+<!-- Photos -->
+<div class="card hidden" id="photos">
+  <h2>Our Memories 📸</h2>
+  <div class="photos">
+    <div class="photo"><img src="assets/photos/photo1.jpg"><p>Sweet Hello</p></div>
+    <div class="photo"><img src="assets/photos/photo2.jpg"><p>True Smile</p></div>
+    <div class="photo"><img src="assets/photos/photo3.jpg"><p>Perfect Day</p></div>
+    <div class="photo"><img src="assets/photos/photo4.jpg"><p>Only Us</p></div>
+    <div class="photo"><img src="assets/photos/photo5.jpg"><p>My Home</p></div>
+    <div class="photo"><img src="assets/photos/photo6.jpg"><p>Forever Us</p></div>
+  </div>
+  <button class="red" onclick="go('gifts')">← Back</button>
+</div>
+
+<script>
+/* Navigation */
+const sections = ['landing','mine','gifts','quiz','letter','photos'];
+function go(id){
+  sections.forEach(s => document.getElementById(s).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+/* Sounds */
+const clickSound = new Audio('assets/sounds/click.mp3');
 const successSound = new Audio('assets/sounds/success.mp3');
 
-function playClick() {
-  clickSound.currentTime = 0;
-  clickSound.play();
+function playClick(){ clickSound.currentTime = 0; clickSound.play(); }
+function playSuccess(){ successSound.currentTime = 0; successSound.play(); }
+
+/* NO button teasing */
+let scale = 1;
+noBtn.onclick = () => {
+  scale += 0.2;
+  yesBtn.style.transform = `scale(${scale})`;
+  tease.innerText = 'Think again 😏';
+};
+
+/* Confetti & Hearts */
+function launchConfetti(){
+  for(let i=0;i<30;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=['#ff4d6d','#ffd166','#ff9ff3'][Math.floor(Math.random()*3)];
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
 }
 
-function playSuccess() {
-  successSound.currentTime = 0;
-  successSound.play();
+function launchHearts(){
+  for(let i=0;i<6;i++){
+    const h=document.createElement('div');
+    h.className='heart';
+    h.innerText='💗';
+    h.style.left=Math.random()*100+'vw';
+    h.style.bottom='40px';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),2500);
+  }
 }
-  const sections = ['landing','mine','gifts','quiz','letter','photos'];
-  function go(id) {
-    sections.forEach(s => document.getElementById(s).classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
+
+/* Quiz */
+const quiz = [
+  { text:'Who quarrels the most?', correct:'me' },
+  { text:'Who says sorry every time?', correct:'you' },
+  { text:'Who loves the other more?', correct:'both' }
+];
+
+let q = 0;
+const qEl = document.getElementById('question');
+const msg = document.getElementById('quizMsg');
+qEl.innerText = quiz[q].text;
+
+function answer(choice){
+  const correct = quiz[q].correct;
+  if(correct !== 'both' && choice !== correct){
+    msg.innerText='Hmm… think again 😏';
+    return;
   }
-
-  // NO button teasing
-  let yesScale = 1;
-  const noBtn = document.getElementById('noBtn');
-  const yesBtn = document.getElementById('yesBtn');
-  const tease = document.getElementById('tease');
-  noBtn.addEventListener('click', () => {
-    yesScale += 0.2;
-    yesBtn.style.transform = `scale(${yesScale})`;
-    tease.innerText = 'Think again 😏';
-  });
-
-  // Quiz logic
-  const questions = [
-    'Who quarrels the most?',
-    'Who says sorry every time?',
-    'Who loves the other more?'
-  ];
-  let qIndex = 0;
-  document.getElementById('question').innerText = questions[qIndex];
-
-  function answer(correct) {
-    const msg = document.getElementById('quizMsg');
-    if (!correct) {
-      msg.innerText = 'Nope 😌 try again';
-      return;
-    }
-    qIndex++;
-    if (qIndex < questions.length) {
-      document.getElementById('question').innerText = questions[qIndex];
-      msg.innerText = 'Hehe 😏';
-    } else {
-      msg.innerText = 'Okay you know me well ❤️';
-      setTimeout(() => go('gifts'), 1200);
-    }
+  launchHearts();
+  q++;
+  if(q < quiz.length){
+    qEl.innerText = quiz[q].text;
+    msg.innerText='Hehe 😌';
+  } else {
+    msg.innerText='Okay okay… we both win ❤️';
+    launchConfetti();
+    setTimeout(()=>go('gifts'),1500);
   }
-</script></body>
+}
+</script>
+
+</body>
 </html>
